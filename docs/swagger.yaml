@@ -1,0 +1,120 @@
+definitions:
+  controller.Event:
+    properties:
+      eventID:
+        type: integer
+      eventTime:
+        type: string
+      payload:
+        type: integer
+      userID:
+        type: integer
+    type: object
+  controller.Request:
+    properties:
+      eventID:
+        type: integer
+      lower limit:
+        type: string
+      upper limit:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/event:
+    get:
+      description: Retrieve events from ClickHouse.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: events retrieved successfully
+          schema:
+            items:
+              $ref: '#/definitions/controller.Event'
+            type: array
+        "500":
+          description: error getting events from ClickHouse
+          schema:
+            type: string
+      summary: Get Events
+      tags:
+      - Get
+    post:
+      consumes:
+      - application/json
+      description: Insert event into ClickHouse.
+      parameters:
+      - description: Event object to insert
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/controller.Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: event inserted successfully
+          schema:
+            type: string
+        "400":
+          description: bad request
+          schema:
+            type: string
+        "500":
+          description: internal server error
+          schema:
+            type: string
+      summary: Insert Event
+      tags:
+      - Create
+  /api/search:
+    get:
+      description: Search for events in ClickHouse based on criteria.
+      parameters:
+      - description: Search criteria
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/controller.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: events matching search criteria
+          schema:
+            items:
+              $ref: '#/definitions/controller.Event'
+            type: array
+        "400":
+          description: bad request
+          schema:
+            type: string
+        "500":
+          description: error parsing events from ClickHouse
+          schema:
+            type: string
+      summary: Search Events
+      tags:
+      - Get
+  /api/test:
+    get:
+      description: Insert random test data.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: test data inserted successfully
+          schema:
+            type: string
+        "500":
+          description: error
+          schema:
+            type: string
+      summary: Test
+      tags:
+      - Get
+swagger: "2.0"
