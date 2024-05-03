@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  clickhouse:
+    image: "docker.io/yandex/clickhouse-server"
+    environment:
+      CLICKHOUSE_DB: "default"
+      ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "8123:8123"
+      - "9009:9009"
+      - "9000:9000"
+    networks:
+      - my_network
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - clickhouse
+    networks:
+      - my_network
+networks:
+  my_network:
+

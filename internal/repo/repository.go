@@ -50,7 +50,7 @@ func (r *Repo) GetEvent(ctx context.Context) ([]entity.Event, error) {
 func connect() (driver.Conn, error) {
 	dialCount := 0
 	conn, err := clickhouse.Open(&clickhouse.Options{
-		Addr: []string{"127.0.0.1:9000"},
+		Addr: []string{"clickhouse:9000"},
 		Auth: clickhouse.Auth{
 			Database: "default",
 			Username: "default",
